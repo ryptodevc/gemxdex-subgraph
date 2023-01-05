@@ -1,0 +1,49 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Exchange
+    network: goerli
+    source:
+      address: "0xB0C4DBedB926D86758F78C9F23E7BF9538d22Bb5"
+      abi: Exchange
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Cancel
+        - Deposit
+        - Order
+        - OwnershipTransferred
+        - Subtrade
+        - Trade
+        - UpdateFeeInfo
+        - Withdraw
+      abis:
+        - name: Exchange
+          file: ./abis/Exchange.json
+      eventHandlers:
+        - event: Trade(uint256,address,address,uint256,address,uint256,address,uint256)
+          handler: handleTrade
+      file: ./src/exchange.ts
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: goerli
+    source:
+      abi: Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/exchange.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: Pair
+          file: ./abis/pair.json
+        - name: Factory
+          file: ./abis/factory.json

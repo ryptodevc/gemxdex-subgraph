@@ -1,0 +1,48 @@
+type Trade @entity(immutable: true) {
+  id: Bytes!
+  idn: BigInt! # uint256
+  user: Bytes! # address
+  tokenGet: Bytes! # address
+  amountGet: BigInt! # uint256
+  tokenGive: Bytes! # address
+  amountGive: BigInt! # uint256
+  userFill: Bytes! # address
+  timestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Token @entity {
+  id: ID! # token address
+
+  # token specific volume
+  tradeVolume: BigDecimal!
+  tradeVolumeUSD: BigDecimal!
+  # transactions across all pairs
+  txCount: BigInt!
+  # derived prices
+  derivedETH: BigDecimal
+
+  # derived fields
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+}
+
+type TokenDayData @entity {
+  id: ID! # token address
+  date: Int!
+  token: Token!
+
+  # volume stats
+  dailyVolumeToken: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  dailyTxns: BigInt!
+  # price stats
+  priceUSD: BigDecimal!
+}
+
+# stores for USD calculations
+type Bundle @entity {
+  id: ID!
+  ethPrice: BigDecimal! # price of ETH usd
+}
