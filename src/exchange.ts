@@ -41,17 +41,23 @@ export function handleTrade(event: TradeEvent): void {
   }
 
   let bundle = Bundle.load('1')
+  if (bundle === null) {
+    bundle = new Bundle("1")
+  }
+
   bundle.ethPrice = getEthPriceInUSD()
   bundle.save()
 
-  tokenGet.derivedETH = findEthPerToken(tokenGet as Token)
+  let tokenGet_derivedETH = findEthPerToken(tokenGet as Token)
+  tokenGet.derivedETH = tokenGet_derivedETH
   tokenGet.tradeVolume = tokenGet.tradeVolume.plus(event.params.amountGet.toBigDecimal())
-  tokenGet.tradeVolumeUSD = tokenGet.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGet.derivedETH))
+  tokenGet.tradeVolumeUSD = tokenGet.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGet_derivedETH))
   tokenGet.txCount = tokenGet.txCount.plus(ONE_BI)
 
-  tokenGive.derivedETH = findEthPerToken(tokenGive as Token)
+  let tokenGive_derivedETH = findEthPerToken(tokenGive as Token)
+  tokenGive.derivedETH = tokenGive_derivedETH
   tokenGive.tradeVolume = tokenGive.tradeVolume.plus(event.params.amountGive.toBigDecimal())
-  tokenGet.tradeVolumeUSD = tokenGive.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGive.derivedETH))
+  tokenGet.tradeVolumeUSD = tokenGive.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGive_derivedETH))
   tokenGive.txCount = tokenGive.txCount.plus(ONE_BI)
   
   tokenGet.save()
