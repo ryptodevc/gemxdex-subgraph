@@ -1,4 +1,4 @@
-type Trade @entity(immutable: true) {
+type Trade @entity {
   id: Bytes!
   idn: BigInt! # uint256
   user: Bytes! # address

@@ -8,6 +8,8 @@
     "create-local": "graph create --node http://localhost:8020/ ryptodevc/gemxdex",
     "remove-local": "graph remove --node http://localhost:8020/ ryptodevc/gemxdex",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 ryptodevc/gemxdex",
+    "auth": "graph auth --product hosted-service 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",
+    "hs-deploy": "graph deploy --product hosted-service ryptodevc/gemxdex",
     "test": "graph test"
   },
   "dependencies": {

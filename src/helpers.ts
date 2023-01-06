@@ -2,7 +2,7 @@
 import { BigInt, BigDecimal, Address } from '@graphprotocol/graph-ts'
 import { Token, TokenDayData, Bundle } from '../generated/schema'
 import { Trade as TradeEvent } from '../generated/Exchange/Exchange'
-import { Factory as FactoryContract } from '../generated/templates/Pair/Factory'
+import { Factory as FactoryContract } from '../generated/Exchange/Factory'
 import { getEthPriceInUSD } from './pricing'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
