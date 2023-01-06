@@ -9,7 +9,7 @@ import { Pair as PairContract } from '../generated/Exchange/Pair'
 // const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852' // created block 10093341
 
 const WETH_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
-const USDC_WETH_PAIR = '0x647595535c370F6092C6daE9D05a7Ce9A8819F37'
+const USDC_WETH_PAIR = '0x00B64e468d2C705A0907F58505536a6C8c49Ab26'
 const DAI_WETH_PAIR = '0x5dD9dec52a16d4d1Df10a66ac71d4731c9Dad984'
 // const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852'
 
@@ -31,9 +31,9 @@ export function getEthPriceInUSD(): BigDecimal {
   //   // dai and USDC have been created
   // } else 
   if (daiPair !== null && usdcPair !== null) {
-    let totalLiquidityETH = daiPair.getReserves().value0.plus(usdcPair.getReserves().value1)
-    let daiWeight = daiPair.getReserves().value1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.getReserves().value1.div(totalLiquidityETH)
+    let totalLiquidityETH = daiPair.getReserves().value1.plus(usdcPair.getReserves().value1)
+    let daiWeight = daiPair.getReserves().value0.div(totalLiquidityETH)
+    let usdcWeight = usdcPair.getReserves().value0.div(totalLiquidityETH)
     return daiWeight.plus(usdcWeight).toBigDecimal()
     // USDC is the only pair so far
   } else {
@@ -54,11 +54,11 @@ export function findEthPerToken(token: Token): BigDecimal {
   if (pairAddress.toHexString() != ADDRESS_ZERO) {
       let pair = PairContract.bind(Address.fromString(pairAddress.toHexString()))
       if (pair.token0().toHexString() == token.id && pair.getReserves().value1.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
-          let token1 = Token.load(pair.token1().toHexString())
+          // let token1 = Token.load(pair.token1().toHexString())
           return pair.getReserves().value1.toBigDecimal().div(pair.getReserves().value0.toBigDecimal()) // return token1 per our token * Eth per token 1
       }
       if (pair.token1().toHexString() == token.id && pair.getReserves().value0.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
-          let token0 = Token.load(pair.token0().toHexString())
+          // let token0 = Token.load(pair.token0().toHexString())
           return pair.getReserves().value0.toBigDecimal().div(pair.getReserves().value1.toBigDecimal()) // return token1 per our token * Eth per token 1
       }
   }

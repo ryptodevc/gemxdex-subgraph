@@ -3,7 +3,7 @@ import { BigInt, BigDecimal, Address } from '@graphprotocol/graph-ts'
 import { Token, TokenDayData, Bundle } from '../generated/schema'
 import { Trade as TradeEvent } from '../generated/Exchange/Exchange'
 import { Factory as FactoryContract } from '../generated/Exchange/Factory'
-import { getEthPriceInUSD } from './pricing'
+import { getEthPriceInUSD, findEthPerToken } from './pricing'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -34,6 +34,7 @@ export function updateTokenDayData(token: Token, event: TradeEvent): TokenDayDat
 
     let tokenDayData = TokenDayData.load(tokenDayID)
     let token_derivedETH = token.derivedETH
+    token_derivedETH = findEthPerToken(token as Token)
     if(token_derivedETH === null) {
       token_derivedETH =  ZERO_BD
     }
