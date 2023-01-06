@@ -7,7 +7,7 @@ import { Pair as PairContract } from '../generated/Exchange/Pair'
 // const USDC_WETH_PAIR = '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc' // created 10008355
 // const DAI_WETH_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11' // created block 10042267
 // const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852' // created block 10093341
-
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 const WETH_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
 const USDC_WETH_PAIR = '0x00B64e468d2C705A0907F58505536a6C8c49Ab26'
 const DAI_WETH_PAIR = '0x5dD9dec52a16d4d1Df10a66ac71d4731c9Dad984'
@@ -45,7 +45,7 @@ export function getEthPriceInUSD(): BigDecimal {
 let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigInt.fromString('2')
 
 export function findEthPerToken(token: Token): BigDecimal {
-  if (token.id == WETH_ADDRESS) {
+  if (token.id == WETH_ADDRESS || token.id == ZERO_ADDRESS) {
       return ONE_BD
   }
 

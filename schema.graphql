@@ -23,7 +23,8 @@ type Token @entity {
   txCount: BigInt!
   # derived prices
   derivedETH: BigDecimal
-
+  # eth price
+  ethPrice: BigDecimal!
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
 }

@@ -53,13 +53,15 @@ export function handleTrade(event: TradeEvent): void {
   tokenGet.tradeVolume = tokenGet.tradeVolume.plus(event.params.amountGet.toBigDecimal())
   tokenGet.tradeVolumeUSD = tokenGet.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGet_derivedETH))
   tokenGet.txCount = tokenGet.txCount.plus(ONE_BI)
+  tokenGet.ethPrice = bundle.ethPrice
 
   let tokenGive_derivedETH = findEthPerToken(tokenGive as Token)
   tokenGive.derivedETH = tokenGive_derivedETH
   tokenGive.tradeVolume = tokenGive.tradeVolume.plus(event.params.amountGive.toBigDecimal())
-  tokenGet.tradeVolumeUSD = tokenGive.tradeVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(tokenGive_derivedETH))
+  tokenGive.tradeVolumeUSD = tokenGive.tradeVolumeUSD.plus(event.params.amountGive.toBigDecimal().times(bundle.ethPrice).times(tokenGive_derivedETH))
   tokenGive.txCount = tokenGive.txCount.plus(ONE_BI)
-  
+  tokenGive.ethPrice = bundle.ethPrice
+
   tokenGet.save()
   tokenGive.save()
 
