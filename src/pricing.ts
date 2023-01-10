@@ -8,29 +8,27 @@ import { Pair as PairContract } from '../generated/Exchange/Pair'
 // const DAI_WETH_PAIR = '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11' // created block 10042267
 // const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852' // created block 10093341
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
-const WETH_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
-const USDC_WETH_PAIR = '0x00B64e468d2C705A0907F58505536a6C8c49Ab26'
-const DAI_WETH_PAIR = '0x5dD9dec52a16d4d1Df10a66ac71d4731c9Dad984'
-// const USDT_WETH_PAIR = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852'
+const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
 
+const DAI_WETH_PAIR = '0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11'
+const USDC_WETH_PAIR = '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc'
+const USDT_WETH_PAIR = '0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852'
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let daiPair = PairContract.bind(Address.fromString(DAI_WETH_PAIR)) // dai is token0
   let usdcPair = PairContract.bind(Address.fromString(USDC_WETH_PAIR)) // usdc is token0
-  // let usdtPair = PairContract.bind(Address.fromString(USDT_WETH_PAIR)) // usdt is token1
+  let usdtPair = PairContract.bind(Address.fromString(USDT_WETH_PAIR)) // usdt is token1
 
   // all 3 have been created
-  // if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-  //   let totalLiquidityETH = daiPair.getReserves().value1.plus(usdcPair.getReserves().value1).plus(usdtPair.getReserves().value0)
-  //   let daiWeight = daiPair.getReserves().value1.div(totalLiquidityETH)
-  //   let usdcWeight = usdcPair.getReserves().value1.div(totalLiquidityETH)
-  //   let usdtWeight = usdtPair.getReserves().value0.div(totalLiquidityETH)
-
-  //   return daiWeight.plus(usdcWeight).plus(usdtWeight).toBigDecimal()
-  //   // dai and USDC have been created
-  // } else 
-  if (daiPair !== null && usdcPair !== null) {
+  if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
+    let totalLiquidityETH = daiPair.getReserves().value1.plus(usdcPair.getReserves().value1).plus(usdtPair.getReserves().value0)
+    let daiWeight = daiPair.getReserves().value1.div(totalLiquidityETH)
+    let usdcWeight = usdcPair.getReserves().value1.div(totalLiquidityETH)
+    let usdtWeight = usdtPair.getReserves().value0.div(totalLiquidityETH)
+    return daiWeight.plus(usdcWeight).plus(usdtWeight).toBigDecimal()
+    // dai and USDC have been created
+  } else if (daiPair !== null && usdcPair !== null) {
     let totalLiquidityETH = daiPair.getReserves().value1.plus(usdcPair.getReserves().value1)
     let daiWeight = daiPair.getReserves().value0.div(totalLiquidityETH)
     let usdcWeight = usdcPair.getReserves().value0.div(totalLiquidityETH)

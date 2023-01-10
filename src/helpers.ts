@@ -50,8 +50,8 @@ export function updateTokenDayData(token: Token, event: TradeEvent): TokenDayDat
     }
 
     tokenDayData.priceUSD = token_derivedETH.times(bundle.ethPrice)
-    tokenDayData.dailyVolumeToken = tokenDayData.dailyVolumeToken.plus(event.params.amountGive.toBigDecimal())
-    tokenDayData.dailyVolumeUSD = tokenDayData.dailyVolumeUSD.plus(event.params.amountGet.toBigDecimal().times(bundle.ethPrice).times(token_derivedETH))
+    tokenDayData.dailyVolumeToken = tokenDayData.dailyVolumeToken.plus(token.tradeVolume)
+    tokenDayData.dailyVolumeUSD = tokenDayData.dailyVolumeUSD.plus(token.tradeVolume.times(bundle.ethPrice).times(token_derivedETH))
 
     tokenDayData.dailyTxns = tokenDayData.dailyTxns.plus(ONE_BI)
     tokenDayData.save()
